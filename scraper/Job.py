@@ -6,6 +6,10 @@ from selenium.common.exceptions import NoSuchElementException
 
 
 class Job(LinkedIn):
+    """
+    The Job class inherits from the LinkedIn class and is used to extract
+    job-specific details from a given LinkedIn job URL.
+    """
 
     TITLE_CLASS = 'jobs-unified-top-card__job-title'
     DETAILS_CLASS = 'job-details-job-alert__description'
@@ -14,6 +18,12 @@ class Job(LinkedIn):
     DESCRIPTION_ID = 'job-details'
 
     def __init__(self, url):
+        """
+        Initialize the Job class with a job URL.
+
+        Parameters:
+        url (str): The URL of the job posting on LinkedIn.
+        """
         super().__init__()
         self.url = url
         self.go_to(url)
@@ -22,6 +32,13 @@ class Job(LinkedIn):
             self.extract_text_from_html_elements()
 
     def as_dict(self):
+        """
+        Returns the job details as a dictionary.
+
+        Returns:
+        dict: A dictionary containing the job details if they were successfully
+        extracted, or an empty dictionary if not.
+        """
         if hasattr(self, 'id'):
             return {
                 'id': self.id,
@@ -36,6 +53,10 @@ class Job(LinkedIn):
             return {}
 
     def load_dynamic_content(self):
+        """
+        Load dynamic content on the job page by executing JavaScript to click
+        the "see more" button.
+        """
         click_description_button_js = '''
             let seeMoreButton = document.querySelector('button.artdeco-card__action');
             if (seeMoreButton) seeMoreButton.click();
@@ -45,9 +66,19 @@ class Job(LinkedIn):
         time.sleep(3)
 
     def scroll_down(self):
+        """
+        Scroll down the page by using the PAGE_DOWN key on the body of the page.
+        """
         self.webpage.find_element(By.TAG_NAME, "body").send_keys(Keys.PAGE_DOWN)
 
     def extract_html_elements(self):
+        """
+        Extract HTML elements containing job details from the webpage. If any
+        required element is missing, the job is skipped.
+
+        Returns:
+        bool: True if all elements were successfully extracted, False otherwise.
+        """
         page = LinkedIn.webpage
         try:
             self.title_element = page.find_element(By.CLASS_NAME, self.TITLE_CLASS)
@@ -61,6 +92,9 @@ class Job(LinkedIn):
             return False
 
     def extract_text_from_html_elements(self):
+        """
+        Extract text from the HTML elements that contain job details.
+        """
         self.title = self.title_element.text
         self.company = self.company_element.text
         # Extract ID from URL: 'http://www.linkedin.com/jobs/view/3597550681'
