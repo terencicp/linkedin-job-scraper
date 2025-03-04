@@ -1,7 +1,7 @@
 ## Full project
 This is part of my portfolio project that analyses the skills required for entry-level data analysis jobs in the EU. You can view the full project at:
 
-[https://terencicp.github.io/](https://terencicp.github.io/)
+[https://terencicp.github.io/linkedin](https://terencicp.github.io/linkedin)
 
 ## Requirements
 Requires Google Chrome and a LinkedIn account.
